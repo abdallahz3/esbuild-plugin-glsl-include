@@ -18,7 +18,13 @@ const parse = async (filePath, cache) => {
     while (match != null) {
         const pragma = match[0];
         const filename = match[1];
-        const file = path.join(path.dirname(filePath), filename);
+        // const file = path.join(path.dirname(filePath), filename);
+        let file;
+        if (!filename.includes("/") || filename.includes("..")) {
+          file = path.join(path.dirname(filePath), "./" + filename);
+        } else {
+          file = path.join(__dirname, "./" + filename);
+        }
 
         try {
             let contents = cache.get(file);
